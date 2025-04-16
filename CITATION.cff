@@ -1,0 +1,20 @@
+cff-version: 1.2.0
+title: Demo Microsoft Entra
+message: >-
+  If you use this work and you want to cite it,
+  then you can use the metadata from this file.
+type: software
+authors:
+  - given-names: Joel Parker
+    family-names: Henderson
+    email: joel.henderson@wales.nhs.uk
+    affiliation: wales.nhs.uk
+    orcid: 'https://orcid.org/0009-0000-4681-282X'
+identifiers:
+  - type: url
+    value: 'https://github.com/GIG-Cymru-NHS-Wales/demo-microsoft-entra/'
+    description: Demo Microsoft Entra
+repository-code: 'https://github.com/GIG-Cymru-NHS-Wales/demo-microsoft-entra/'
+abstract: >-
+  Demo Microsoft Entra
+license: See license file
