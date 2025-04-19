@@ -3,7 +3,6 @@ import '../assets/Header.css';
 import { useMsal, useIsAuthenticated } from '@azure/msal-react'
 import { loginRequest } from '../authConfig'
 
-
 function Header() {
   const { instance } = useMsal();
   const isAuthenticated = useIsAuthenticated();
