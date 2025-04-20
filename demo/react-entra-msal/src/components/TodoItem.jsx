@@ -1,4 +1,4 @@
-import '../assets/TodoItem.css'
+import '../styles/TodoItem.css'
 import React from 'react';
 
 const TodoItem = ({ todo, index, onToggle, onDelete }) => {

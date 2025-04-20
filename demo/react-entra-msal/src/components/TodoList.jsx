@@ -1,8 +1,8 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useState, useEffect } from 'react';
 import { useMsal } from '@azure/msal-react';
 import TodoItem from './TodoItem';
 import AddTodoForm from './AddTodoForm';
-import { InteractionRequiredAuthError } from '@azure/msal-browser';
+import { apiCall } from '../services/todoService'; // adjust path as needed
 
 const TodoList = () => {
   const [todos, setTodos] = useState([]);
@@ -10,78 +10,78 @@ const TodoList = () => {
   const account = accounts[0];
 
   const usingApi = import.meta.env.VITE_APP_USING_API === "true";
+  const apiUrl = import.meta.env.VITE_APP_TODO_API_URI;
+  const apiScope = `${import.meta.env.VITE_APP_API_IDENTIFIER}/.default`;
 
-  const getAccessToken = useCallback(async () => {
-    try {
-      const response = await instance.acquireTokenSilent({
-        scopes: [`${import.meta.env.VITE_APP_API_IDENTIFIER}/.default`],
-        account,
-      });
-
-      return response.accessToken;
-    } catch (error) {
-      if (error instanceof InteractionRequiredAuthError) {
-        const response = await instance.acquireTokenPopup({
-          scopes: [`${import.meta.env.VITE_APP_API_IDENTIFIER}/.default`],
-        })
-        return response.accessToken;
-      } else {
-        console.error("Token acquisition failed:", error);
-        throw error;
+  // Fetch todos on page load - this will persist todos after a page refresh
+  useEffect(() => {
+    const fetchTodos = async () => {
+      if (usingApi && account) {
+        try {
+          const data = await apiCall({
+            method: 'GET',
+            url: `${apiUrl}/todos`,
+            instance,
+            account,
+            scope: apiScope
+          });
+          if (data) setTodos(data);
+        } catch (err) {
+          console.error('Failed to fetch todos:', err);
+        }
       }
-    }
-  }, [instance, account]);
-
-  const apiCall = useCallback(
-    async (UrlString, method, body = null) => {
-      const accessToken = await getAccessToken();
-      const headers = {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${accessToken}`,
-      };
-
-      const res = await fetch(UrlString, { method, headers, body: body && JSON.stringify(body) });
-      return res.ok ? await res.json() : null;
-    },
-    [getAccessToken]
-  );
+    };
+    fetchTodos();
+  }, [usingApi, instance, account, apiUrl, apiScope]);
 
   const addTodo = async (text) => {
     const newTodo = { id: Date.now(), text, completed: false };
 
     if (usingApi) {
-      try {
-        const apiTodo = await apiCall("http://localhost:4000/api/todos", "POST", { text });
-        if (apiTodo) {
-          newTodo.id = apiTodo.id;
-          setTodos((prevTodos) => [...prevTodos, newTodo]);
-        } else {
-          console.error("Error adding todo");
-        }
-      } catch (error) {
-        console.error("Error in API call:", error);
+      const apiTodo = await apiCall({
+        method: 'POST',
+        url: `${apiUrl}/todos`,
+        body: { text },
+        instance,
+        account,
+        scope: apiScope
+      });
+
+      if (apiTodo) {
+        newTodo.id = apiTodo.id;
+        setTodos((prev) => [...prev, newTodo]);
       }
     } else {
-      setTodos((prevTodos) => [...prevTodos, newTodo]);
+      setTodos((prev) => [...prev, newTodo]);
     }
   };
 
-  const toggleTodo = async(id) => {
+  const toggleTodo = async (id) => {
     if (usingApi) {
-      await apiCall(`http://localhost:4000/api/todos/${id}/complete`, "PUT");
+      await apiCall({
+        method: 'PUT',
+        url: `${apiUrl}/todos/${id}/complete`,
+        instance,
+        account,
+        scope: apiScope
+      });
     }
-    setTodos(
-      todos.map(todo =>
-        todo.id === id ? { ...todo, completed: !todo.completed } : todo
-      )
-    );
+    setTodos(todos.map(todo =>
+      todo.id === id ? { ...todo, completed: !todo.completed } : todo
+    ));
   };
 
-  const deleteTodo = async(id) => {
-    setTodos((prevTodos) => prevTodos.filter((todo) => todo.id !== id));
+  const deleteTodo = async (id) => {
+    setTodos((prev) => prev.filter((todo) => todo.id !== id));
 
     if (usingApi) {
-      await apiCall(`http://localhost:4000/api/todos/${id}`, "DELETE");
+      await apiCall({
+        method: 'DELETE',
+        url: `${apiUrl}/todos/${id}`,
+        instance,
+        account,
+        scope: apiScope
+      });
     }
   };
 

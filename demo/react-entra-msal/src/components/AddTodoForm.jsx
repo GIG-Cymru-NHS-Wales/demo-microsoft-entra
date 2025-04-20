@@ -1,4 +1,4 @@
-import '../assets/TodoForm.css'
+import '../styles/TodoForm.css'
 import React, { useState } from 'react';
 import { Plus } from 'lucide-react';
 

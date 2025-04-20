@@ -10,8 +10,6 @@ app.use(cors());
 
 app.use(express.json());
 
-console.log("Env vars", process.env.API_TENANT_ID);
-
 const checkJwt = jwt.expressjwt({
     secret: jwks.expressJwtSecret({
         cache: true,
@@ -33,6 +31,11 @@ const getUserId = (req) => req.auth?.oid || req.auth?.sub;
 app.get('/api/protected', checkJwt, (req, res) => {
     res.json({ message: 'You accessed a protected API route!', user: req.auth });
 });
+
+app.get('/api/_status', (req, res) => {
+    const response = "Node API running successfully!";
+    res.json(response);
+})
 
 app.get('/api/todos', checkJwt, (req, res) => {
     const userId = getUserId(req);

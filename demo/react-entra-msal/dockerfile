@@ -3,10 +3,6 @@ FROM node:18-slim AS build
 
 WORKDIR /app
 
-#Add environment variables
-ENV VITE_CLIENT_ID=d3da4b73-660a-43f0-99f8-427cdb706247
-ENV VITE_AUTHORITY=https://login.microsoftonline.com/14464d54-418e-4777-9137-b990ce14f921
-
 # install dependancies
 COPY package*.json ./
 RUN npm install

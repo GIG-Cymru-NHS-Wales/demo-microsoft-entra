@@ -1,3 +1,69 @@
+# Node API Entra Demo
+
+## Prerequisites
+For this demo you will need:
+- An API registered within Entra and for it to have at least one scope exposed
+- The API identifier for the above
+- An SPA application registration which has API permissions setup
+
+## To configure the demo API
+Once you have downloaded the demo application open the `.env` file to update the environment variables to be able to connect to your Entra application registration.
+```dotenv
+API_TENANT_ID=your-tenant-id
+API_IDENTIFIER=api://your-api-identifier
+```
+
+## How to setup an API in Entra
+First you will need to register a new application in your Entra App registrations.
+![Application registration example](assets/images/application-reg.png)
+*For demo purposes we have created a Node API Entra Demo registration*
+
+### Application Id URI
+The first time you create a scope in the below steps, Entra will ask you to define an Application Id URI. This is the `api-identifier` we will use to configure our environment variables above.
+![API identifier](assets/images/api-identifier.png)
+*For demo purposes we have used "node-api-entra", you can name it whatever you find most suitable*
+
+### Create an API Scope
+To enable our API to be available to other applications in our Entra tenancy we need to first create a scope and expose it. To do so go to **Expose an API** in the Entra application registration for your API. Then select **Add a scope**
+![Scopes setup](assets/images/scopes-setup.png)
+*For demo purposes we have named our scope read from an API and made it Admins only. You can read more on scopes here on the [AuthO website](https://auth0.com/docs/get-started/apis/scopes/api-scopes)*
+
+### Using the API in your front end application
+To use allow your front end application to have permissions to use your API you need to configure your front end apps Entra application registration. Open your front end application registration in Entra and then open API permissions. From there select **Add a permission** -> **My APIs** -> Select your API.
+![API permissions setup](assets/images/api-permissions.png)
+
+## To run the demo API locally
+If would like just to run the Node API, open a terminal in the `node-api-entra` directory and run the below:
+```bash
+npm install
+npm run dev
+```
+The API is secured via the Entra API registration so for the purposes of the demo you will need to use the `react-entra-msal` front end client React application. This can be achieved by configuring both and running them locally or by utilising the `docker-compose` file in the `react-node-docker-compose` directory.
+
+There is a _status endpoint configured at `https://localhost:4000/api/_status` if you would like to check the API is up and running without the front-end application.
+
+## To run the demo API using docker
+To run the Node API in a docker container you can follow the steps below.
+If you are using Windows make sure you have Docker Desktop installed and the engine is running before continuing.
+
+First update the environment variables in the dockerfile
+```
+# Add environment variables
+ENV API_TENANT_ID=your-tenant-id
+ENV API_IDENTIFIER=api://your-api-id
+```
+
+Open a bash terminal in the same directory as the dockerfile and run the below to build the image:
+```bash
+docker build -t node-api-entra .
+```
+
+Once the image has built run the below to start the React dev server within your docker container:
+```bash
+docker run -p 4000:4000 node-api-entra
+```
+Once the docker container is running it will be available on port 4000 and you can use the front end application to access it. You can also use the `https://localhost:4000/api/_status` to check the API is running.
+
 # How to create a Node API with Entra authorisation
  
 ## Initialise node api
@@ -130,3 +196,5 @@ API_IDENTIFIER=api://your-api-client-id
 ✅ Use HTTPS in production
 
 ✅ Set up CORS properly - define the correct allowed origins
+
+## Running the API

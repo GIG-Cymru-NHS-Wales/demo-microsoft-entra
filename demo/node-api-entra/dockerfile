@@ -1,0 +1,20 @@
+FROM node:18-slim
+
+# Set the working directory
+WORKDIR /api
+
+# Add environment variables
+ENV API_TENANT_ID=your-tenant-id
+ENV API_IDENTIFIER=api://your-api-id
+
+# Copy dependency definitions
+COPY package*.json ./
+
+# Install dependencies
+RUN npm install --omit=dev
+
+# Copy the rest of the app
+COPY . .
+
+# Start the API
+CMD ["node", "index.js"]
