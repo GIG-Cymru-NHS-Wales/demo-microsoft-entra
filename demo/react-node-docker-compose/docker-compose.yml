@@ -1,0 +1,21 @@
+version: '3.9'
+
+services:
+  frontend:
+    build:
+      context: ../react-entra-msal  # path to your React app Dockerfile
+      dockerfile: Dockerfile
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
+
+  backend:
+    build:
+      context: ../node-api-entra  # path to your Node API Dockerfile
+      dockerfile: Dockerfile
+    ports:
+      - "4000:4000"
+    environment:
+      - API_TENANT_ID=your-tenant-id
+      - API_IDENTIFIER=api://your-api-identifier

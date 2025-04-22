@@ -1,0 +1,23 @@
+.todo-form {
+    margin-bottom: 1rem;
+    padding: 8px;
+    display: flex;
+    flex-direction: row;
+}
+
+.todo-input {
+    height: 20px;
+    width: 75vw;
+    margin: auto;
+}
+
+.todo-button {
+    display: flex;
+    align-items: center;  /* vertical centering */
+    justify-content: center;  /* horizontal centering (optional) */
+    height: 35px;
+    background-color: green;
+    padding: 0 16px;
+    border-radius: .2rem;
+    margin-left: 10px;
+}
