@@ -5,7 +5,10 @@
     "dictionaries": [],
     "words": [
         "CIAM",
-        "Entra"
+        "Entra",
+        "Intune",
+        "MSAL",
+        "msalInstance"
     ],
     "ignoreWords": [],
     "import": []
