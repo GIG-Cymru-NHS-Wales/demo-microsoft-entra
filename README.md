@@ -224,6 +224,44 @@ You should see the new tenant:
 
 * Organization ID: b9aefa47-5268-439b-8d5d-070bd5536d93 (whatever UUID Microsoft creates for your new organization)
 
+## Create an enterprise application
+
+When you view your new tenant, you should see "Applications: 0".
+
+* Click that zero.
+
+* Or go directly to <https://portal.azure.com/?feature.msaljs=true#view/Microsoft_AAD_IAM/EnterpriseApplicationListBladeV3>
+
+* Click "+ New Application".
+
+Page: Browse Microsoft Entra Gallery
+
+* Click "Create your own application".
+
+Dialog: Create your own application
+
+* What's the name of your app? demo
+
+* What are you looking to do with your application? Register an application to integrate with Microsoft Entra ID (App you're developing)
+
+* Click "Create".
+
+Page: Register an application
+
+* The user-facing display name for this application (this can be changed later): demo
+
+* Who can use this application or access this API? Accounts in any organizational directory (Any Microsoft Entra ID tenant - Multitenant) and personal Microsoft accounts (e.g. Skype, Xbox)
+
+* Click "Register"
+
+* You should see "Successfully created application".
+
+List your enterprise applications:
+
+* Visit <https://portal.azure.com/?feature.msaljs=true#view/Microsoft_AAD_IAM/EnterpriseApplicationListBladeV3>
+
+* You should see the new demo application, including its Object ID, Application ID, Identifier URI (Entity ID), etc.
+
 ## Microsoft Authentication Library (MSAL)
 
 <https://learn.microsoft.com/en-us/entra/identity-platform/msal-overview>
